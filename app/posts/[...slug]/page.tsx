@@ -14,9 +14,7 @@ async function getPostFromParams(params: PostProps['params']) {
     const slug = params?.slug?.join('/');
     const post = allPosts.find(post => post.slugAsParams === slug);
 
-    if (!post) {
-        null;
-    }
+    if (!post) null;
 
     return post;
 }
@@ -24,9 +22,7 @@ async function getPostFromParams(params: PostProps['params']) {
 export async function generateMetadata({ params }: PostProps): Promise<Metadata> {
     const post = await getPostFromParams(params);
 
-    if (!post) {
-        return {};
-    }
+    if (!post) return {};
 
     return {
         title: post.title,
@@ -43,9 +39,7 @@ export async function generateStaticParams(): Promise<PostProps['params'][]> {
 export default async function PostPage({ params }: PostProps) {
     const post = await getPostFromParams(params);
 
-    if (!post) {
-        notFound();
-    }
+    if (!post) notFound();
 
     return (
         <article className='py-6 prose dark:prose-invert'>

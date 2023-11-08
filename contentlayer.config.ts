@@ -1,14 +1,13 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files';
+import { ComputedFields, defineDocumentType, makeSource } from 'contentlayer/source-files';
 
-/** @type {import('contentlayer/source-files').ComputedFields} */
-const computedFields = {
+const computedFields: ComputedFields = {
     slug: {
         type: 'string',
-        resolve: doc => `/${doc._raw.flattenedPath}`
+        resolve: (doc: any) => `/${doc._raw.flattenedPath}`
     },
     slugAsParams: {
         type: 'string',
-        resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/')
+        resolve: (doc: any) => doc._raw.flattenedPath.split('/').slice(1).join('/')
     }
 };
 
@@ -49,6 +48,6 @@ export const Post = defineDocumentType(() => ({
 }));
 
 export default makeSource({
-    contentDirPath: './content',
+    contentDirPath: 'content',
     documentTypes: [Post, Page]
 });
