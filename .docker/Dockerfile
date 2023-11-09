@@ -13,9 +13,7 @@ RUN npm run build
 
 FROM nginx:1.17.8-alpine
 
-COPY --from=build /app/public /usr/share/nginx/html/public
-COPY --from=build /app/.next/standalone /usr/share/nginx/html/.next/standalone
-COPY --from=build /app/.next/static /usr/share/nginx/html/.next/static
+COPY --from=build /app/.next /usr/share/nginx/html
 
 
 RUN rm /etc/nginx/conf.d/default.conf
