@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+    client:
+        build:
+            context: .
+            dockerfile: ./.docker/Dockerfile
+        restart: unless-stopped
+        volumes:
+          - .:/app
+          - /app/node_modules
+          - /app/.next
+        expose:
+            - 80
+        networks:
+            - nginx-proxy
+
+networks:
+    nginx-proxy:
+        external: true
