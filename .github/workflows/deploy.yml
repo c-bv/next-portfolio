@@ -16,10 +16,9 @@ jobs:
             - name: Debug
               run: |
                 echo ${{ github.ref }}
-                echo  $REGISTRY
+                echo ${{ env.REGISTRY }}
                 echo ${{ github.actor }}
                 echo ${{ secrets.GITHUB_TOKEN }}
-                echo $REGISTRY/$IMAGE_NAME:main
 
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
@@ -29,6 +28,6 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-                      docker pull $REGISTRY/$IMAGE_NAME:main
+                      docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+                      docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
                       docker-compose -f docker-compose.yml up -d
