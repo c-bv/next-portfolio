@@ -13,12 +13,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Debug
-              run: |
-                echo ${{ github.ref }}
-                echo ${{ env.REGISTRY }}
-                echo ${{ github.actor }}
-                echo ${{ secrets.GITHUB_TOKEN }}
+            - name: Debug VPS Contents
+              run: ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'ls -la'
 
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
