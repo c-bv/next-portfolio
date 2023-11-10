@@ -7,7 +7,6 @@ on:
 env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
-    BRANCH: ${{ github.ref }}
 
 jobs:
     deploy:
@@ -17,17 +16,17 @@ jobs:
             - name: Debug
               run: |
                   echo ${{ secrets.SSH_HOST }}
-                  echo ${{ secrets.USERNAME }}
+                  echo ${{ secrets.SSH_USERNAME }}
                   echo ${{ github.ref }}
 
-            # - name: Deploy to VPS
-            #   uses: appleboy/ssh-action@v1.0.0
-            #   with:
-            #       host: ${{ secrets.SSH_HOST }}
-            #       username: ${{ secrets.USERNAME }}
-            #       key: ${{ secrets.KEY }}
-            #       port: ${{ secrets.PORT }}
-            #       script: |
-            #         docker login $REGISTRY -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
-            #         docker pull $REGISTRY/$IMAGE_NAME:main
-            #         docker-compose -f docker-compose.yml up -d
+            - name: Deploy to VPS
+              uses: appleboy/ssh-action@v1.0.0
+              with:
+                  host: ${{ secrets.SSH_HOST }}
+                  username: ${{ secrets.SSH_USERNAME }}
+                  key: ${{ secrets.KEY }}
+                  port: ${{ secrets.PORT }}
+                  script: |
+                      docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+                      docker pull $REGISTRY/$IMAGE_NAME:main
+                      docker-compose -f docker-compose.yml up -d
