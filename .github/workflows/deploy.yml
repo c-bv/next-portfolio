@@ -21,7 +21,9 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                      ls -la
-                      docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-                      docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-                      docker-compose -f docker-compose.yml up -d
+                    cd ~/${{ env.IMAGE_NAME }}
+                    docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+                    docker-compose down --rmi all
+                    docker-compose up -d
+
+                        
