@@ -13,9 +13,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Debug VPS Contents
-              run: ssh -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} -p ${{ secrets.SSH_PORT }} ls -la
-
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
               with:
@@ -24,6 +21,7 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
+                      ls -la
                       docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
                       docker-compose -f docker-compose.yml up -d
