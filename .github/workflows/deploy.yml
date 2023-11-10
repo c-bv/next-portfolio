@@ -15,10 +15,6 @@ jobs:
         steps:
             - name: Debug
               run: |
-                echo ${{ secrets.SSH_HOST }}
-                echo ${{ secrets.SSH_USERNAME }}
-                echo ${{ secrets.SSH_KEY }}
-                echo ${{ secrets.SSH_PORT }}
                 echo ${{ github.ref }}
                 echo  $REGISTRY
                 echo ${{ github.actor }}
