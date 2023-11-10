@@ -7,15 +7,13 @@ on:
 env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository }}
+    REPO_NAME: ${{ github.event.repository.name }}
 
 jobs:
     deploy:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Extract Repository Name
-              id: extract_repo_name
-              run: echo "${{ github.event.repository.name }}"
 
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
@@ -25,9 +23,7 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
-                    echo "Deploying to VPS"
-                    echo ${{ env.IMAGE_NAME }}
-                    cd ~/${{ env.IMAGE_NAME }}
+                    cd ~/${{ env.REPO_NAME }}
                     docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                     docker-compose down --rmi all
                     docker-compose up -d
