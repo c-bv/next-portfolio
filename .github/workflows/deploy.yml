@@ -21,6 +21,8 @@ jobs:
                   key: ${{ secrets.SSH_KEY }}
                   port: ${{ secrets.SSH_PORT }}
                   script: |
+                    echo "Deploying to VPS"
+                    echo ${{ env.IMAGE_NAME }}
                     cd ~/${{ env.IMAGE_NAME }}
                     docker login ${{ env.REGISTRY }} -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                     docker-compose down --rmi all
