@@ -15,17 +15,23 @@ jobs:
         steps:
             - name: Debug
               run: |
-                  echo ${{ secrets.SSH_HOST }}
-                  echo ${{ secrets.SSH_USERNAME }}
-                  echo ${{ github.ref }}
+                echo ${{ secrets.SSH_HOST }}
+                echo ${{ secrets.SSH_USERNAME }}
+                echo ${{ secrets.SSH_KEY }}
+                echo ${{ secrets.SSH_PORT }}
+                echo ${{ github.ref }}
+                echo  $REGISTRY
+                echo ${{ github.actor }}
+                echo ${{ secrets.GITHUB_TOKEN }}
+                echo $REGISTRY/$IMAGE_NAME:main
 
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
               with:
                   host: ${{ secrets.SSH_HOST }}
                   username: ${{ secrets.SSH_USERNAME }}
-                  key: ${{ secrets.KEY }}
-                  port: ${{ secrets.PORT }}
+                  key: ${{ secrets.SSH_KEY }}
+                  port: ${{ secrets.SSH_PORT }}
                   script: |
                       docker login $REGISTRY -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
                       docker pull $REGISTRY/$IMAGE_NAME:main
