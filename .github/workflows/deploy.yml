@@ -13,6 +13,13 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Extract Repository Name
+              id: extract_repo_name
+              run: echo "::set-output name=repo_name::$(basename $REPO_NAME)"
+
+            - name: Use Extracted Repository Name
+              run: echo "Extracted Repository Name ${{ steps.extract_repo_name.outputs.repo_name }}"
+
             - name: Deploy to VPS
               uses: appleboy/ssh-action@v1.0.0
               with:
